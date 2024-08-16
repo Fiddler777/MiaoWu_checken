@@ -152,8 +152,8 @@ to_email = os.getenv('TO_EMAIL')
 
 
 # 将Cookies字符串解析为字典
-# cookies = {item.split('=')[0]: item.split('=')[1] for item in cookies_str.split('; ')}
-cookies = BCW9_2132_nofavfid=1;BCW9_2132_smile=4D1;_ga_XVKCRW7JDK=deleted;_ga_XVKCRW7JDK=deleted;BCW9_2132_atarget=1;BCW9_2132_visitedfid=51D44D50D45D77D43D81D74D75;BCW9_2132_saltkey=Yk6Hp66k;BCW9_2132_lastvisit=1723816765;BCW9_2132_sid=CpSpwf;BCW9_2132_sendmail=1;_gid=GA1.2.814624834.1723820369;_gat_gtag_UA_131654240_2=1;BCW9_2132_seccodecSCpSpwf=1572.b464ba0d53976e7cba;BCW9_2132_ulastactivity=943eK1Qk7cmBDn4AzJBzvYM3IWHw%2FT4QBbLK7DK7hL4SpUEdHJOm;BCW9_2132_auth=337cV9e2F3Wo5fNostrFjOrvlyjYIcyz0X0jnjLZbYoPTL%2BRpuYin2xkqnMQF%2BpDZcAz2fJUCdBhUONyNXcxgO3Jew;BCW9_2132_lastcheckfeed=14701%7C1723820384;BCW9_2132_checkfollow=1;BCW9_2132_checkpm=1;BCW9_2132_noticeTitle=1;BCW9_2132_onlineusernum=184;BCW9_2132_lastact=1723820393%09forum.php%09image;_ga_XVKCRW7JDK=GS1.1.1723820368.24.1.1723820394.0.0.0;_ga=GA1.2.1850508726.1702041498
+cookies = {item.split('=')[0]: item.split('=')[1] for item in cookies_str.split('; ')}
+# cookies = BCW9_2132_nofavfid=1;BCW9_2132_smile=4D1;_ga_XVKCRW7JDK=deleted;_ga_XVKCRW7JDK=deleted;BCW9_2132_atarget=1;BCW9_2132_visitedfid=51D44D50D45D77D43D81D74D75;BCW9_2132_saltkey=Yk6Hp66k;BCW9_2132_lastvisit=1723816765;BCW9_2132_sid=CpSpwf;BCW9_2132_sendmail=1;_gid=GA1.2.814624834.1723820369;_gat_gtag_UA_131654240_2=1;BCW9_2132_seccodecSCpSpwf=1572.b464ba0d53976e7cba;BCW9_2132_ulastactivity=943eK1Qk7cmBDn4AzJBzvYM3IWHw%2FT4QBbLK7DK7hL4SpUEdHJOm;BCW9_2132_auth=337cV9e2F3Wo5fNostrFjOrvlyjYIcyz0X0jnjLZbYoPTL%2BRpuYin2xkqnMQF%2BpDZcAz2fJUCdBhUONyNXcxgO3Jew;BCW9_2132_lastcheckfeed=14701%7C1723820384;BCW9_2132_checkfollow=1;BCW9_2132_checkpm=1;BCW9_2132_noticeTitle=1;BCW9_2132_onlineusernum=184;BCW9_2132_lastact=1723820393%09forum.php%09image;_ga_XVKCRW7JDK=GS1.1.1723820368.24.1.1723820394.0.0.0;_ga=GA1.2.1850508726.1702041498
 logger.info("test-222,cookies = %s", cookies)
 # 任务页面地址
 task_page_url = 'https://forum.h3dhub.com/home.php?mod=task'
