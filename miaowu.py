@@ -77,6 +77,7 @@ def apply_task(task_id,isVip=False,isAnnual_Vip=False):
         logger.info("开始提交任务")
         # 提交任务
         response = submit_task(task_id)
+        logger.info("test-222, response = %s", response)
 
     return response
 
