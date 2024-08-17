@@ -2,15 +2,10 @@ import os
 import requests
 import re
 import smtplib
-import logging
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import time
 
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
-logger = logging.getLogger(__name__)
 
 def requests_get(url, submit=False, apply=False, checken=False, page=False, referer=None, cookies=None):
     headers = {
@@ -30,9 +25,9 @@ def requests_get(url, submit=False, apply=False, checken=False, page=False, refe
         headers['Referer'] = referer
         response = session.get(url, headers=headers)
         if response.status_code == 200:
-            logger.info("签到成功")
+            print("签到成功")
         else :
-            logger.info("签到失败")
+            print("签到失败")
 
     if apply or submit :
         referer = 'https://forum.h3dhub.com/home.php?mod=task'
@@ -60,11 +55,11 @@ def get_formhash(response_text):
 def apply_task(task_id,isVip=False,isAnnual_Vip=False):
 
     if isAnnual_Vip:
-        logger.info("开始年费会员任务签到")
+        print("开始年费会员任务签到")
     elif isVip:
-        logger.info("开始Vip任务签到")
+        print("开始Vip任务签到")
     else:
-        logger.info("开始执行任务签到")
+        print("开始执行任务签到")
 
     # 任务申请地址
     task_apply_url = 'https://forum.h3dhub.com/home.php?mod=task&do=apply&id={}'.format(task_id)
@@ -74,10 +69,9 @@ def apply_task(task_id,isVip=False,isAnnual_Vip=False):
 
     # 正常情况下申请任务后就会自动提交，但是可能有不提交的情况
     if response == '任务仅接取' :
-        logger.info("开始提交任务")
+        print("开始提交任务")
         # 提交任务
         response = submit_task(task_id)
-        logger.info("test-222, response = %s", response)
 
     return response
 
@@ -94,7 +88,7 @@ def result(response,isVip=False,isAnnual_Vip=False):
     
     sign_result = re.search(r'class="alert_(error|info)">\n<p>(.*?)<', response)
     
-    #logger.info(f"Sign result: {sign_result}")
+    #print(f"Sign result: {sign_result}")
     if sign_result and '任务' in sign_result.group(2):
         result_str = sign_result.group(2)
     elif isAnnual_Vip:
@@ -107,7 +101,7 @@ def result(response,isVip=False,isAnnual_Vip=False):
         subject = "论坛签到结果通知"
         send_email(subject, result_str, from_email, to_email, smtp_server, smtp_port, smtp_user, smtp_password)
 
-    logger.info(result_str)
+    print(result_str)
 
 
 def send_email(subject, body, from_email, to_email, smtp_server, smtp_port, smtp_user, smtp_password):
@@ -128,15 +122,11 @@ def send_email(subject, body, from_email, to_email, smtp_server, smtp_port, smtp
 
 # 从环境变量中获取Cookies字符串
 cookies_str = os.getenv('COOKIES')  # 论坛的Cookies字符串
-
 # 从环境变量中获取任务id
 isTuanYuan = os.getenv('TUANYUAN','false')
-# isTuanYuan = true
 if isTuanYuan == 'true':
-    logger.info("test-000")
     task_id = '14'
 else:
-    logger.info("test-111")
     task_id = '22'
 
 isVip = os.getenv('VIP','false')
@@ -153,21 +143,20 @@ to_email = os.getenv('TO_EMAIL')
 
 
 # 将Cookies字符串解析为字典
-cookies = {item.split('=')[0]: item.split('=')[1] for item in cookies_str.split('; ')}
-# cookies = BCW9_2132_nofavfid=1;BCW9_2132_smile=4D1;_ga_XVKCRW7JDK=deleted;_ga_XVKCRW7JDK=deleted;BCW9_2132_atarget=1;BCW9_2132_visitedfid=51D44D50D45D77D43D81D74D75;BCW9_2132_saltkey=Yk6Hp66k;BCW9_2132_lastvisit=1723816765;BCW9_2132_sid=CpSpwf;BCW9_2132_sendmail=1;_gid=GA1.2.814624834.1723820369;_gat_gtag_UA_131654240_2=1;BCW9_2132_seccodecSCpSpwf=1572.b464ba0d53976e7cba;BCW9_2132_ulastactivity=943eK1Qk7cmBDn4AzJBzvYM3IWHw%2FT4QBbLK7DK7hL4SpUEdHJOm;BCW9_2132_auth=337cV9e2F3Wo5fNostrFjOrvlyjYIcyz0X0jnjLZbYoPTL%2BRpuYin2xkqnMQF%2BpDZcAz2fJUCdBhUONyNXcxgO3Jew;BCW9_2132_lastcheckfeed=14701%7C1723820384;BCW9_2132_checkfollow=1;BCW9_2132_checkpm=1;BCW9_2132_noticeTitle=1;BCW9_2132_onlineusernum=184;BCW9_2132_lastact=1723820393%09forum.php%09image;_ga_XVKCRW7JDK=GS1.1.1723820368.24.1.1723820394.0.0.0;_ga=GA1.2.1850508726.1702041498
-logger.info("test-222,cookies = %s", cookies)
+cookies = {item.split('=')[0]: item.split('=')[1] for item in re.split(r';\s*', cookies_str)}
+
 # 任务页面地址
 task_page_url = 'https://forum.h3dhub.com/home.php?mod=task'
 
-logger.info("Starting the sign-in process")
+print("Starting the sign-in process")
 
 # 访问任务页面
 response = requests_get(task_page_url, page=True, cookies=cookies)
-#logger.info(f"Sign page response: {response[:500]}")  # 打印前500个字符以避免过多输出
+#print(f"Sign page response: {response[:500]}")  # 打印前500个字符以避免过多输出
 
 # 获取formhash验证串
 formhash = get_formhash(response)
-logger.info(f"Sign formhash: {formhash}")
+print(f"Sign formhash: {formhash}")
 
 #获取当前时间戳
 timestamp = int(time.time())
@@ -176,12 +165,12 @@ timestamp = int(time.time())
 sign_submit_url = 'https://forum.h3dhub.com/home.php?mod=spacecp&ac=pm&op=checknewpm&rand={}'.format(timestamp)
 
 # 每日签到
-logger.info("开始执行每日登录")
+print("开始执行每日登录")
 requests_get(sign_submit_url, checken=True, cookies=cookies)
 
 # 申请任务
 response = apply_task(task_id)
-#logger.info(f"Sign submit response: {response[:500]}")  # 打印前500个字符以避免过多输出
+#print(f"Sign submit response: {response[:500]}")  # 打印前500个字符以避免过多输出
 
 # 获取任务结果
 result(response)
